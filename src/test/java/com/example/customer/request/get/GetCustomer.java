@@ -19,7 +19,7 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringBootTest
 public class GetCustomer extends CustomerBaseUrl {
 
-    @Test
+//    @Test
     public void getCustomerByEmail() {
         Customer customer = CustomerInitializer.getInstance().getCustomer();
         spec.pathParam("email", customer.getEmailAddress());

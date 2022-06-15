@@ -15,7 +15,7 @@ import static io.restassured.RestAssured.given;
 
 public class DeleteCustomer extends CustomerBaseUrl {
 
-    @Test
+//    @Test
     public void deleteCustomer(){
 
         Customer customer = CustomerInitializer.getInstance().getCustomer();

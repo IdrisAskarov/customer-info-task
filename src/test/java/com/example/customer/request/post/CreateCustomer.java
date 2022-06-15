@@ -16,7 +16,7 @@ import static io.restassured.RestAssured.given;
 
 public class CreateCustomer extends CustomerBaseUrl {
 
-    @Test
+//    @Test
     public void testCreateCustomer() {
 
         Faker faker = new Faker();
