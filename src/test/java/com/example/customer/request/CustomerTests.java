@@ -1,5 +1,6 @@
 package com.example.customer.request;
 
+
 import com.example.customer.CustomerInitializer;
 import com.example.customer.base_urls.CustomerBaseUrl;
 import com.example.customer.model.Customer;
@@ -18,39 +19,16 @@ import static org.hamcrest.Matchers.equalTo;
 @SpringBootTest
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomerTests extends CustomerBaseUrl {
-    public static Customer customer;
-    private CustomerTests(){
-        Faker faker = new Faker();
-        this.customer = new Customer();
-        this.customer.setFirstName(faker.name().firstName());
-        this.customer.setLastName(faker.name().lastName());
-        this.customer.setEmailAddress(faker.internet().emailAddress());
-        this.customer.setPassword(faker.internet().password());
-        this.customer.setBirthDate(faker.date().birthday().toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate());
 
-    }
 
     @Test
     @Order(1)
     public void testCreateCustomer() {
-
-        Faker faker = new Faker();
-        String email = faker.internet().emailAddress();
-//        Customer customer = new Customer();
-//        customer.setFirstName(faker.name().firstName());
-//        customer.setLastName(faker.name().lastName());
-//        customer.setEmailAddress(email);
-//        customer.setPassword(faker.internet().password());
-//        customer.setBirthDate(faker.date().birthday().toInstant()
-//                .atZone(ZoneId.systemDefault())
-//                .toLocalDate());
-        CustomerInitializer customerInitializer = CustomerInitializer.getInstance();
+        Customer customer = CustomerInitializer.getInstance().getCustomer();
         Response response = given()
                 .spec(spec)
                 .contentType(ContentType.JSON)
-                .body(customerInitializer.getCustomer())
+                .body(customer)
                 .when()
                 .post("/add");
 
@@ -60,8 +38,24 @@ public class CustomerTests extends CustomerBaseUrl {
 
     @Test
     @Order(2)
+    public void testCreateExistingCustomer() {
+        Customer customer = CustomerInitializer.getInstance().getCustomer();
+        Response response = given()
+                .spec(spec)
+                .contentType(ContentType.JSON)
+                .body(customer)
+                .when()
+                .post("/add");
+
+        response.then().statusCode(500);
+        response.prettyPrint();
+    }
+
+    @Test
+    @Order(3)
     public void getCustomerByEmail() {
         Customer customer = CustomerInitializer.getInstance().getCustomer();
+
         spec.pathParam("email", customer.getEmailAddress());
 
 
@@ -80,10 +74,11 @@ public class CustomerTests extends CustomerBaseUrl {
     }
 
     @Test
-    @Order(3)
+    @Order(4)
     public void updateCustomer(){
-        Faker faker = new Faker();
         Customer customer = CustomerInitializer.getInstance().getCustomer();
+
+        Faker faker = new Faker();
         customer.setLastName(faker.name().lastName());
         customer.setFirstName(faker.name().firstName());
 
@@ -100,9 +95,8 @@ public class CustomerTests extends CustomerBaseUrl {
     }
 
     @Test
-    @Order(4)
+    @Order(5)
     public void deleteCustomer(){
-
         Customer customer = CustomerInitializer.getInstance().getCustomer();
 
         spec.pathParam("email",customer.getEmailAddress());
@@ -113,9 +107,6 @@ public class CustomerTests extends CustomerBaseUrl {
                 .delete("/delete/{email}");
 
         response.then().statusCode(200);
-
         response.prettyPrint();
-
-
     }
 }

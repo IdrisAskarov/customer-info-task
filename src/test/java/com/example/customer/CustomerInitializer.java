@@ -1,7 +1,8 @@
 package com.example.customer;
 
-import com.github.javafaker.Faker;
 import com.example.customer.model.Customer;
+import com.github.javafaker.Faker;
+
 import java.time.ZoneId;
 
 public class CustomerInitializer {
