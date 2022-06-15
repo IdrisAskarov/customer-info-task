@@ -23,7 +23,7 @@ public class GetCustomer extends CustomerBaseUrl {
                 .accept(ContentType.JSON)
                 .when()
                 .get("/get/{email}");
-        String prettyPrint = response.prettyPrint();
+        String prettyPrint2 = response.prettyPrint();
 
         response
                 .then()
